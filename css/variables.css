@@ -1,0 +1,30 @@
+:root {
+  --highl1: rgb(209,50,81);
+  --highl2: rgb(230,98,95);
+  --dark: rgb(16,16,16);
+  --light: rgb(250,250,250);
+  --topbar: 3em;
+}
+.light, :root {
+  --bg-front: rgb(250,250,250);
+  --bg-back: rgb(240,240,240);
+  --txt: rgb(45,45,45);
+  --accent: rgb(150,150,150);
+  --shad: 0 0 0.5em rgba(30,30,30,0.3);
+}
+.dark {
+  --bg-front: rgb(45,45,45);
+  --bg-back: rgb(30,30,30);
+  --txt: rgb(250,250,250);
+  --accent: rgb(150,150,150);
+  --shad: 0 0 0.75em rgba(255,255,255,0);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-front: rgb(45,45,45);
+    --bg-back: rgb(30,30,30);
+    --txt: rgb(255,255,255);
+    --accent: rgb(16,16,16);
+    --shad: 0 0 0.75em rgba(255,255,255,0);
+  }
+}

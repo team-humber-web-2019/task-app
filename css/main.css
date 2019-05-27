@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,400i,800,800i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Heebo:100,300,400,700,800,900&display=swap');
+
+html, body {
+  height: 100%;
+}
+body {
+  font-family: 'Heebo', 'Poppins', sans-serif;
+  font-weight: 300;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: var(--topbar);
+  width: 100%;
+  background-color: var(--bg-front);
+}
+.cal {
+  display: grid;
+  grid-template-rows: 3fr 1fr;
+  grid-gap: 1em;
+  padding: 1em;
+  height: 100%;
+  background-color: var(--bg-back);
+  color: var(--txt);
+  padding-top: calc(1em + var(--topbar));
+}
+.cal > .day {
+  display: none; 
+  background-color: var(--bg-front);
+  box-shadow: var(--shad);
+  border-radius: 0.25em;
+  padding: 0 0.5em;
+}
+.cal > .day:nth-child(-n+3) { display: block; }
+.cal > .day:nth-child(1) { display: none; }
+
+.today {
+  padding: 0 0.375em; /* remove border from padding */
+  background-color: var(--highl2);
+  background: linear-gradient(90deg, var(--highl1) 0%, var(--highl2) 100%);
+  color: var(--light);
+}
+.past {
+  opacity: 0.3;
+}
+
+.date {
+  display: block;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--dark);
+  margin: 1em 0;
+  padding: 0 0.5em;
+}
+
+.tasks {
+  margin: 1em 0;
+  line-height: 1.5;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+  .tasks > .task {
+    line-height: 1;
+    padding: 0.25em 0.5em;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .tasks > .task:hover {
+    background-color: var(--bg-back);
+    cursor: grab;
+  }
+    .today .tasks > .task:hover {
+      background-color: var(--dark);
+    }
+
+.done {
+  text-decoration: line-through;
+}
