@@ -55,9 +55,12 @@ To help with date and time, determine a few cases:
   2. A start and end TIME that fall on different days
   3. A start date with no start time
 
+
 ## Misc "To Do"
 
 - User settings: 
   - 24hr vs am/pm
 - Type checking for new appointments
   - `throw`, possibly some `try`/`catch`?
+
+
