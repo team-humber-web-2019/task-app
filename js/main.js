@@ -19,7 +19,7 @@ const tasks = [
       time: 744,
       duration: 55,   
     },
-    complete: false,
+    complete: true,
   },
   {
     name: `Learn!`,
@@ -33,21 +33,58 @@ const tasks = [
     complete: false,
   }
 ];
+//// Time 
+const getTimeFromMinutes = (mins, military = true) => {
+  // 0 = 0:00
+  // 1 = 0:01
+  // 60 = 1:00
+  // 660 =11:00
+  let format = 24;
+  let period = ``;
 
-const getTimeFromMinutes = (mins) => {
+  if (!military) {
+    format = 12;
 
+  if (mins > 1440 / 2) {
+    period = `pm`
+  }
+  else {
+    period = `am`
+  }
+
+}
+  let d = Math.floor(mins/ 1440);
+  let h = Math.floor((mins % 1440) / 60) % format;
+  let m = mins % 60;
+
+  if (d > 0) {
+    d = `(+${d})`
+  }
+  else {
+    d = ``;
+  }
+  if (h == 0 && !military) {
+    h = '12';
+  }
+  else if (h < 10) {
+    h = `0${h}`
+  }
+
+  if (m < 10) {
+    m = `0${m}`
+  }
   // Convert from number to string
-  return mins;
+  return `${h}:${m}${period}${d}`;
 } 
-
+////////
 
 const $tasks = document.getElementById(`tasks`);
 
 $tasks.innerHTML = 
   tasks.map(task => `
-    <li>
+    <li class="tasks ${ (task.complete) ? `done`:``}">
       <h2>${task.name}</h2>
-      <div>${ getTimeFromMinutes(task.start.time) } to ${ getTimeFromMinutes(task.start.time + task.start.duration) } (+1)</div>
+      <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false)}</div>
     </li>`)
     .join(``);
 
