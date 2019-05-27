@@ -1,10 +1,13 @@
+/* -----------------------------
+              DATA
+----------------------------- */
 const tasks = [
   {
     name: `Write the task application`,
     start: {
       year: 2019,
       month: 5,
-      date: 27,
+      date: 28,
       time: 660,        // 11:00am
       duration: 1500,   // minutes = 25 hrs
     },
@@ -34,6 +37,25 @@ const tasks = [
   }
 ];
 
+
+/* -----------------------------
+        DOM REFERENCES
+----------------------------- */
+const $tasks = document.getElementById(`tasks`);
+
+
+/* -----------------------------
+      OTHER GLOBAL VARS
+----------------------------- */
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth();
+const date = today.getDate();
+
+
+/* -----------------------------
+        HELPER FUNCTIONS
+----------------------------- */
 const getTimeFromMinutes = (mins, military=true) => {
 
   // 0   = 00:00
@@ -81,21 +103,34 @@ const getTimeFromMinutes = (mins, military=true) => {
   return `${h}:${m}${period}${d}`;
 } 
 
+const formatOneTask = (task) => { 
+  // return a String
+  return `
+  <li class="task${ (task.complete) ? ` done` : `` }">
+    <h2>${task.name}</h2>
+    <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false) }</div>
+  </li>`;
+}
 
-const $tasks = document.getElementById(`tasks`);
+const showTaskByComplete = (task) => {
+  // return Boolean (true/false)
+  return !task.complete
+}
 
-$tasks.innerHTML = 
-  tasks.map(task => `
-    <li class="task${ (task.complete) ? ` done` : `` }">
-      <h2>${task.name}</h2>
-      <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false) }</div>
-    </li>`)
-    .join(``);
+const isTaskToday = (task) => {
+  // Check if the year, month and date match this task's start properties
+  // Return true if so, otherwise false
+  return true;
+}
 
-// tasks.forEach(task => {
-//   $tasks.innerHTML += 
-//     `<li>
-//       <h2>${task.name}</h2>
-//       <div>${ getTimeFromMinutes(task.start.time) } to ${ getTimeFromMinutes(task.start.time + task.start.duration) } (+1)</div>
-//     </li>`
-// });
+
+/* -----------------------------
+       APPLICATION START
+----------------------------- */
+const printTodaysTasks = () => {
+
+  $tasks.innerHTML = tasks.filter(isTaskToday).map(formatOneTask).join(``);
+};
+
+printTodaysTasks();
+
