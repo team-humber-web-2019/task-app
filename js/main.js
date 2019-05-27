@@ -48,9 +48,9 @@ const $tasks = document.getElementById(`tasks`);
       OTHER GLOBAL VARS
 ----------------------------- */
 const today = new Date();
-const year = today.getFullYear();
-const month = today.getMonth();
-const date = today.getDate();
+// const year = today.getFullYear();
+// const month = today.getMonth();
+// const date = today.getDate();
 
 
 /* -----------------------------
@@ -120,7 +120,13 @@ const showTaskByComplete = (task) => {
 const isTaskToday = (task) => {
   // Check if the year, month and date match this task's start properties
   // Return true if so, otherwise false
-  return true;
+  if ( task.start.year == today.getFullYear() &&
+       task.start.month == today.getMonth()+1 &&
+       task.start.date == today.getDate() ) {
+    return true;
+  }
+
+  return false;
 }
 
 const formatDateAsHeading = (date) => {
