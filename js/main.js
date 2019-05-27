@@ -123,6 +123,11 @@ const isTaskToday = (task) => {
   return true;
 }
 
+const formatDateAsHeading = (date) => {
+
+  return `<h2>Hello!</h2>`;
+}
+
 
 /* -----------------------------
        APPLICATION START
