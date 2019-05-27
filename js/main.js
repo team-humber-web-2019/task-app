@@ -45,7 +45,7 @@ const $tasks = document.getElementById(`tasks`);
 
 $tasks.innerHTML = 
   tasks.map(task => `
-    <li>
+    <li class="task">
       <h2>${task.name}</h2>
       <div>${ getTimeFromMinutes(task.start.time) } to ${ getTimeFromMinutes(task.start.time + task.start.duration) } (+1)</div>
     </li>`)
