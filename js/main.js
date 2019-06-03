@@ -89,6 +89,7 @@ const $tasks = document.getElementById(`tasks`);
 
 
 // WRAP THIS IN A FUNCTION: getTasksAsHtml, return a String of HTML for all tasks
+// CALL THE FUNCTION FOR THE FIRST TIME AND ASSIGN THE VALUE TO THE innerHTML of $tasks
 $tasks.innerHTML = 
   tasks.map(task => `
     <li class="task${ (task.complete) ? ` done` : `` }" data-taskid="${task.id}">
