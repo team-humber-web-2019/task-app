@@ -90,13 +90,17 @@ const $tasks = document.getElementById(`tasks`);
 
 // WRAP THIS IN A FUNCTION: getTasksAsHtml, return a String of HTML for all tasks
 // CALL THE FUNCTION FOR THE FIRST TIME AND ASSIGN THE VALUE TO THE innerHTML of $tasks
-$tasks.innerHTML = 
-  tasks.map(task => `
-    <li class="task${ (task.complete) ? ` done` : `` }" data-taskid="${task.id}">
-      <h2>${task.name}</h2>
-      <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false) }</div>
-    </li>`)
-    .join(``);
+
+const getOneTaskAsHtmlString = (task) => {
+  return `<li class="task${ (task.complete) ? ` done` : `` }" data-taskid="${task.id}">
+    <h2>${task.name}</h2>
+    <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false) }</div>
+  </li>`;
+}
+
+const getAllTasksAsHtmlString = () => {
+  return tasks.map(getOneTaskAsHtmlString).join(``);
+}
 
 
 
@@ -105,19 +109,38 @@ $tasks.addEventListener(`click`, (event) => {
   //console.log(event.target);
   
   // Find the "closest" element that matches .task (css selector)
-  let task = event.target.closest(`.task`);
+  let $task = event.target.closest(`.task`);
 
   // If none were found, then get the heck outta here!
-  if (!task) return;
+  if (!$task) return;
 
   // If we got this far, we must have found a `.task`, now let's dive into it...
-  console.log(task.dataset.taskid);
+  const taskid = $task.dataset.taskid;
 
   // Change status to "done" or not "done"
   // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
   // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
   // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
 
+  // Search for the first element whose id matches the one we're looking for
+  let taskObj = tasks.find( t => t.id == taskid );
+
+  // If no matching task was found
+  if (!taskObj) return;
+
+  // Set "compelete" to its inverse
+  taskObj.complete = !taskObj.complete;
+
+  // Reprint the list of tasks
+  $tasks.innerHTML = getAllTasksAsHtmlString();
+
+});
+
+
+
+window.addEventListener('load', event => {
+
+  $tasks.innerHTML = getAllTasksAsHtmlString();
 
 });
 
