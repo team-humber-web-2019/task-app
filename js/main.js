@@ -87,6 +87,8 @@ const getTimeFromMinutes = (mins, military=true) => {
 
 const $tasks = document.getElementById(`tasks`);
 
+
+// WRAP THIS IN A FUNCTION: getTasksAsHtml, return a String of HTML for all tasks
 $tasks.innerHTML = 
   tasks.map(task => `
     <li class="task${ (task.complete) ? ` done` : `` }" data-taskid="${task.id}">
@@ -96,8 +98,11 @@ $tasks.innerHTML =
     .join(``);
 
 
+
 $tasks.addEventListener(`click`, (event) => {
 
+  //console.log(event.target);
+  
   // Find the "closest" element that matches .task (css selector)
   let task = event.target.closest(`.task`);
 
@@ -108,6 +113,13 @@ $tasks.addEventListener(`click`, (event) => {
   console.log(task.dataset.taskid);
 
   // Change status to "done" or not "done"
+  // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
+  // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
+  // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
 
-})
+
+});
+
+
+
 

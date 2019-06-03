@@ -73,6 +73,10 @@ body {
     .today .tasks > .task:hover {
       background-color: var(--dark);
     }
+/* 
+.task * {
+  pointer-events: none;
+} */
 
 
 .done {
