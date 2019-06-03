@@ -1,5 +1,6 @@
 const tasks = [
   {
+    id: 123,
     name: `Write the task application`,
     start: {
       year: 2019,
@@ -11,6 +12,7 @@ const tasks = [
     complete: false,
   },
   {
+    id: 456,
     name: `Take lunch`,
     start: {
       year: 2019,
@@ -22,6 +24,7 @@ const tasks = [
     complete: true,
   },
   {
+    id: 789,
     name: `Learn!`,
     start: {
       year: 2019,
@@ -86,16 +89,25 @@ const $tasks = document.getElementById(`tasks`);
 
 $tasks.innerHTML = 
   tasks.map(task => `
-    <li class="task${ (task.complete) ? ` done` : `` }">
+    <li class="task${ (task.complete) ? ` done` : `` }" data-taskid="${task.id}">
       <h2>${task.name}</h2>
       <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false) }</div>
     </li>`)
     .join(``);
 
-// tasks.forEach(task => {
-//   $tasks.innerHTML += 
-//     `<li>
-//       <h2>${task.name}</h2>
-//       <div>${ getTimeFromMinutes(task.start.time) } to ${ getTimeFromMinutes(task.start.time + task.start.duration) } (+1)</div>
-//     </li>`
-// });
+
+$tasks.addEventListener(`click`, (event) => {
+
+  // Find the "closest" element that matches .task (css selector)
+  let task = event.target.closest(`.task`);
+
+  // If none were found, then get the heck outta here!
+  if (!task) return;
+
+  // If we got this far, we must have found a `.task`, now let's dive into it...
+  console.log(task.dataset.taskid);
+
+  // Change status to "done" or not "done"
+
+})
+
