@@ -1,42 +1,11 @@
-const tasks = [
-  {
-    id: 123,
-    name: `Write the task application`,
-    start: {
-      year: 2019,
-      month: 5,
-      date: 27,
-      time: 660,        // 11:00am
-      duration: 1500,   // minutes = 25 hrs
-    },
-    complete: false,
-  },
-  {
-    id: 456,
-    name: `Take lunch`,
-    start: {
-      year: 2019,
-      month: 5,
-      date: 27,
-      time: 744,
-      duration: 55,   
-    },
-    complete: true,
-  },
-  {
-    id: 789,
-    name: `Learn!`,
-    start: {
-      year: 2019,
-      month: 5,
-      date: 27,
-      time: null,
-      duration: null,   
-    },
-    complete: false,
-  }
-];
+// tasks.js loads up here.
 
+
+
+// Receives a Number of minutes, optionally takes a Boolean to set military time vs am/pm
+// Returns a formatted String in either military or AM/PM
+
+// PURE FUNCTION: Is immutable, it always returns the same value for the same input
 const getTimeFromMinutes = (mins, military=true) => {
 
   // 0   = 00:00
@@ -84,64 +53,85 @@ const getTimeFromMinutes = (mins, military=true) => {
   return `${h}:${m}${period}${d}`;
 } 
 
-
-const $tasks = document.getElementById(`tasks`);
-
-
-// WRAP THIS IN A FUNCTION: getTasksAsHtml, return a String of HTML for all tasks
-// CALL THE FUNCTION FOR THE FIRST TIME AND ASSIGN THE VALUE TO THE innerHTML of $tasks
-
+// This is a PURE FUNCTION
 const getOneTaskAsHtmlString = (task) => {
+  // Returns a string that will be used to create some new HTML
   return `<li class="task${ (task.complete) ? ` done` : `` }" data-taskid="${task.id}">
     <h2>${task.name}</h2>
     <div>${ getTimeFromMinutes(task.start.time, false) } to ${ getTimeFromMinutes(task.start.time + task.start.duration, false) }</div>
   </li>`;
 }
 
-const getAllTasksAsHtmlString = () => {
-  return tasks.map(getOneTaskAsHtmlString).join(``);
+// This is a PURE FUNCTION
+const getSomeTasksAsHtmlString = (someTasks) => {
+  // For each "tasks" object, take the proprties it holds, map it to a new Array of Strings using our formatting function
+  
+  // Create a new array HTML Strings
+  const allTasksAsHTML = someTasks.map(getOneTaskAsHtmlString);
+
+  // Takes the Array and joins it as a string
+  return allTasksAsHTML.join(``);
+}
+
+const showLoading = (show = true) => {
+  const $modal = document.getElementById(`modal`);
+
+  if (show == true) {
+    $modal.classList.add(`show`)
+  } else {
+    $modal.classList.remove(`show`)
+  }
 }
 
 
 
-$tasks.addEventListener(`click`, (event) => {
 
-  //console.log(event.target);
-  
-  // Find the "closest" element that matches .task (css selector)
-  let $task = event.target.closest(`.task`);
-
-  // If none were found, then get the heck outta here!
-  if (!$task) return;
-
-  // If we got this far, we must have found a `.task`, now let's dive into it...
-  const taskid = $task.dataset.taskid;
-
-  // Change status to "done" or not "done"
-  // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
-  // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
-  // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
-
-  // Search for the first element whose id matches the one we're looking for
-  let taskObj = tasks.find( t => t.id == taskid );
-
-  // If no matching task was found
-  if (!taskObj) return;
-
-  // Set "compelete" to its inverse
-  taskObj.complete = !taskObj.complete;
-
-  // Reprint the list of tasks
-  $tasks.innerHTML = getAllTasksAsHtmlString();
-
-});
-
-
-
+// INITIALIZATION OF THE DOCUMENT
 window.addEventListener('load', event => {
 
-  $tasks.innerHTML = getAllTasksAsHtmlString();
+  const $tasks = document.getElementById(`tasks`);
 
+  // Add the loading screen when you make a request
+  showLoading();
+
+  $tasks.addEventListener(`click`, (event) => {
+
+    //console.log(event.target);
+    
+    // Find the "closest" element that matches .task (css selector)
+    let $task = event.target.closest(`.task`);
+
+    // If none were found, then get the heck outta here!
+    if (!$task) return;
+
+    // If we got this far, we must have found a `.task`, now let's dive into it...
+    const taskid = $task.dataset.taskid;
+
+    // Change status to "done" or not "done"
+    // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
+    // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
+    // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
+
+    // Search for the first element whose id matches the one we're looking for
+    let taskObj = tasks.find( t => t.id == taskid );
+
+    // If no matching task was found
+    if (!taskObj) return;
+
+    // Set "compelete" to its inverse
+    taskObj.complete = !taskObj.complete;
+
+    // Reprint the list of tasks
+    $tasks.innerHTML = getAllTasksAsHtmlString();
+
+  });
+
+  // Simulate data loading, delay 3 seconds
+  setTimeout(() => {
+    $tasks.innerHTML = getSomeTasksAsHtmlString(tasks);
+    showLoading(false);
+  }, 3000);
+  
 });
 
 

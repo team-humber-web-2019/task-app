@@ -46,16 +46,16 @@ const xhr = new XMLHttpRequest();
 xhr.onreadystatechange = function() {
   if(xhr.readyState == 4) {
     // All good!
+    // Remove loading modal
   }
 }
 
 const getDateFromCertainPage = (pg) => {
   let endPoint = `https://api.themoviedb.org/3/movie/popular?page=${pg}&language=en-US&api_key=${apiKey}`; 
+  // Add loading modal here
   xhr.open(`GET`, endPoint);
   xhr.send();
 }
-
-
 
 const getMovieFromId = (id) => {
   let endPoint = `https://api.themoviedb.org/3/movie/${id}?language=en-US&api_key=${apiKey}`; 
