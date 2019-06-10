@@ -92,6 +92,13 @@ const getOneDayAsHtmlString = (oneDay) => {
   </li>`;
 }
 
+const filterTasksByDate = (aTask) => {
+  const date = { y:2019, m:6, d:9 };
+  // return true if it matches 
+
+  // return false otherwise
+}
+
 
 
 // INITIALIZATION OF THE DOCUMENT
@@ -101,12 +108,13 @@ window.addEventListener('load', event => {
   const $cal = document.getElementById(`cal`);
 
   const days = [
-    {str: `Sunday, June 9, 2019`, classes: `past`, tasks: [allTasks[0], allTasks[1]]},
-    {str: `Monday, June 10, 2019`, classes: `today`, tasks: [allTasks[2]]},
-    {str: `Tuesday, June 11, 2019`, classes: ``, tasks: []},
-    {str: `Wednesday, June 12, 2019`, classes: ``, tasks: []},
-    {str: `Thursday, June 13, 2019`, classes: ``, tasks: []},
+    {str: `Sun, June 09, 2019`, date:{y:2019,m:6,d:9 }, classes: `past`,  tasks: []},
+    {str: `Mon, June 10, 2019`, date:{y:2019,m:6,d:10}, classes: `today`, tasks: []},
+    {str: `Tue, June 11, 2019`, date:{y:2019,m:6,d:11}, classes: ``,      tasks: []},
+    {str: `Wed, June 12, 2019`, date:{y:2019,m:6,d:12}, classes: ``,      tasks: []},
+    {str: `Thu, June 13, 2019`, date:{y:2019,m:6,d:13}, classes: ``,      tasks: []},
   ];
+
 
   $cal.innerHTML = days.map(getOneDayAsHtmlString).join(``);
 

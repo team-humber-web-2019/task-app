@@ -37,5 +37,17 @@ const allTasks = [
       duration: null,   
     },
     complete: false,
+  },
+  {
+    id: 568,
+    name: `Filter by date`,
+    start: {
+      year: 2019,
+      month: 6,
+      date: 9,
+      time: 690,
+      duration: 15,   
+    },
+    complete: false,
   }
 ];
