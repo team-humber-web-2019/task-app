@@ -86,51 +86,86 @@ const showLoading = (show = true) => {
 
 
 
+
+
 // INITIALIZATION OF THE DOCUMENT
 window.addEventListener('load', event => {
 
-  const $tasks = document.getElementById(`tasks`);
+  const daysToDisplay = 5;
+  const $cal = document.getElementById(`cal`);
 
-  // Add the loading screen when you make a request
-  showLoading();
+  for(let i = 0; i < daysToDisplay; i++) {
+    let typeOfDay = ``;
+    if (i == 0) {
+      typeOfDay = `past`
+    } else if (i == 1) {
+      typeOfDay = `today`
+    }
+    $cal.innerHTML += `<li class="day ${typeOfDay}">
+      <h1 class="date">Monday, May 27, 2019</h1>
+      <ul class="tasks" id="tasks"></ul>
+    </li>`;
+  }
 
-  $tasks.addEventListener(`click`, (event) => {
+  /*
+  <li class="day past"></li>
+  <li class="day today">
+    <h1 class="date">Monday, May 27, 2019</h1>
+    <ul class="tasks" id="tasks"></ul>
+  </li>
+  <li class="day"></li>
+  <li class="day"></li>
+  <li class="day"></li>
+  */
 
-    //console.log(event.target);
+
+
+
+
+
+
+  // const $tasks = document.getElementById(`tasks`);
+
+  // // Add the loading screen when you make a request
+  // showLoading();
+
+  // $tasks.addEventListener(`click`, (event) => {
+
+  //   //console.log(event.target);
     
-    // Find the "closest" element that matches .task (css selector)
-    let $task = event.target.closest(`.task`);
+  //   // Find the "closest" element that matches .task (css selector)
+  //   let $task = event.target.closest(`.task`);
 
-    // If none were found, then get the heck outta here!
-    if (!$task) return;
+  //   // If none were found, then get the heck outta here!
+  //   if (!$task) return;
 
-    // If we got this far, we must have found a `.task`, now let's dive into it...
-    const taskid = $task.dataset.taskid;
+  //   // If we got this far, we must have found a `.task`, now let's dive into it...
+  //   const taskid = $task.dataset.taskid;
 
-    // Change status to "done" or not "done"
-    // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
-    // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
-    // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
+  //   // Change status to "done" or not "done"
+  //   // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
+  //   // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
+  //   // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
 
-    // Search for the first element whose id matches the one we're looking for
-    let taskObj = tasks.find( t => t.id == taskid );
+  //   // Search for the first element whose id matches the one we're looking for
+  //   let taskObj = tasks.find( t => t.id == taskid );
 
-    // If no matching task was found
-    if (!taskObj) return;
+  //   // If no matching task was found
+  //   if (!taskObj) return;
 
-    // Set "compelete" to its inverse
-    taskObj.complete = !taskObj.complete;
+  //   // Set "compelete" to its inverse
+  //   taskObj.complete = !taskObj.complete;
 
-    // Reprint the list of tasks
-    $tasks.innerHTML = getAllTasksAsHtmlString();
+  //   // Reprint the list of tasks
+  //   $tasks.innerHTML = getAllTasksAsHtmlString();
 
-  });
+  // });
 
-  // Simulate data loading, delay 3 seconds
-  setTimeout(() => {
-    $tasks.innerHTML = getSomeTasksAsHtmlString(tasks);
-    showLoading(false);
-  }, 3000);
+  // // Simulate data loading, delay 3 seconds
+  // setTimeout(() => {
+  //   $tasks.innerHTML = getSomeTasksAsHtmlString(tasks);
+  //   showLoading(false);
+  // }, 3000);
   
 });
 
