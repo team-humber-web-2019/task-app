@@ -92,11 +92,18 @@ const getOneDayAsHtmlString = (oneDay) => {
   </li>`;
 }
 
-const filterTasksByDate = (aTask) => {
-  const date = { y:2019, m:6, d:9 };
+const filterTasksByDate = (aTask, i, fullTaskList) => {
+  const date = fullTaskList[i].date;
   // return true if it matches 
-
+  if (
+    (aTask.start.year == date.y) && 
+    (aTask.start.month == date.m) && 
+    (aTask.start.date == date.d)
+  ) {
+    return true;
+  }
   // return false otherwise
+  return false;
 }
 
 
@@ -115,7 +122,10 @@ window.addEventListener('load', event => {
     {str: `Thu, June 13, 2019`, date:{y:2019,m:6,d:13}, classes: ``,      tasks: []},
   ];
 
-
+  days.forEach(d => {
+    allTasks.filter( filterTasksByDate )
+  })
+  
   $cal.innerHTML = days.map(getOneDayAsHtmlString).join(``);
 
 
