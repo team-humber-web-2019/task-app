@@ -84,7 +84,13 @@ const showLoading = (show = true) => {
 }
 
 
-
+const getOneDayAsHtmlString = (oneDay) => {
+  return `
+  <li class="day ${oneDay.classes}">
+    <h1 class="date">${oneDay.str}</h1>
+    <ul class="tasks">${ getSomeTasksAsHtmlString(oneDay.tasks) }</ul>
+  </li>`;
+}
 
 
 
@@ -94,18 +100,30 @@ window.addEventListener('load', event => {
   const daysToDisplay = 5;
   const $cal = document.getElementById(`cal`);
 
-  for(let i = 0; i < daysToDisplay; i++) {
-    let typeOfDay = ``;
-    if (i == 0) {
-      typeOfDay = `past`
-    } else if (i == 1) {
-      typeOfDay = `today`
-    }
-    $cal.innerHTML += `<li class="day ${typeOfDay}">
-      <h1 class="date">Monday, May 27, 2019</h1>
-      <ul class="tasks" id="tasks"></ul>
-    </li>`;
-  }
+  const days = [
+    {str: `Sunday, June 9, 2019`, classes: `past`, tasks: [allTasks[0], allTasks[1]]},
+    {str: `Monday, June 10, 2019`, classes: `today`, tasks: [allTasks[2]]},
+    {str: `Tuesday, June 11, 2019`, classes: ``, tasks: []},
+    {str: `Wednesday, June 12, 2019`, classes: ``, tasks: []},
+    {str: `Thursday, June 13, 2019`, classes: ``, tasks: []},
+  ];
+
+  $cal.innerHTML = days.map(getOneDayAsHtmlString).join(``);
+
+
+
+  // for(let i = 0; i < daysToDisplay; i++) {
+  //   let typeOfDay = ``;
+  //   if (i == 0) {
+  //     typeOfDay = `past`
+  //   } else if (i == 1) {
+  //     typeOfDay = `today`
+  //   }
+  //   $cal.innerHTML += `<li class="day ${typeOfDay}">
+  //     <h1 class="date">Monday, May 27, 2019</h1>
+  //     <ul class="tasks" id="tasks"></ul>
+  //   </li>`;
+  // }
 
   /*
   <li class="day past"></li>

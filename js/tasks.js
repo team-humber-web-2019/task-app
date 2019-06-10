@@ -1,7 +1,7 @@
 // All tasks, raw, unsorted, unstructured
 // In the future: We will create an API to return only the data we want, and have it organized
 
-const tasks = [
+const allTasks = [
   {
     id: 123,
     name: `Write the task application`,
