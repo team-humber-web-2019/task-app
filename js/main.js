@@ -62,6 +62,7 @@ const getOneTaskAsHtmlString = (task) => {
   </li>`;
 }
 
+/*
 // This is a PURE FUNCTION
 const getSomeTasksAsHtmlString = (someTasks) => {
   // For each "tasks" object, take the proprties it holds, map it to a new Array of Strings using our formatting function
@@ -71,7 +72,7 @@ const getSomeTasksAsHtmlString = (someTasks) => {
 
   // Takes the Array and joins it as a string
   return allTasksAsHTML.join(``);
-}
+}*/
 
 const showLoading = (show = true) => {
   const $modal = document.getElementById(`modal`);
@@ -81,30 +82,6 @@ const showLoading = (show = true) => {
   } else {
     $modal.classList.remove(`show`)
   }
-}
-
-
-const getOneDayAsHtmlString = (oneDay) => {
-  return `
-  <li class="day ${oneDay.classes}">
-    <h1 class="date">${oneDay.str}</h1>
-    <ul class="tasks">${ getSomeTasksAsHtmlString(oneDay.tasks) }</ul>
-  </li>`;
-}
-
-
-const filterTasksByDate = (aTask, i, fullTaskList) => {
-  const date = fullTaskList[i].date;
-  // return true if it matches 
-  if (
-    (aTask.start.year == date.y) && 
-    (aTask.start.month == date.m) && 
-    (aTask.start.date == date.d)
-  ) {
-    return true;
-  }
-  // return false otherwise
-  return false;
 }
 
 
@@ -119,7 +96,8 @@ const buildOneDay = (y, m, d) => {
     <li class="day" data-y="${y}" data-m="${m}" data-d="${d}">
       <h1 class="date">${y}-${m}-${d}</h1>
       <ul class="tasks">${ $todaysTasks }</ul>
-      <button>Add New Task</button>
+      <button class="addnew">Add New Task</button>
+      <input type="text" placeholder="What task?">
     </li>`;
 }
 
@@ -128,11 +106,10 @@ const buildOneDay = (y, m, d) => {
 // INITIALIZATION OF THE DOCUMENT
 window.addEventListener('load', event => {
 
-  const daysToDisplay = 5;
   const $cal = document.getElementById(`cal`);
 
   const days = [
-    {date:{y:2019,m:6,d:10 }},
+    {date:{y:2019,m:6,d:9 }},
     {date:{y:2019,m:6,d:10}},
     {date:{y:2019,m:6,d:11}},
     {date:{y:2019,m:6,d:12}},
@@ -156,42 +133,6 @@ window.addEventListener('load', event => {
   //   {str: `Wed, June 12, 2019`, date:{y:2019,m:6,d:12}, classes: ``,      tasks: []},
   //   {str: `Thu, June 13, 2019`, date:{y:2019,m:6,d:13}, classes: ``,      tasks: []},
   // ];
-
-  // days.forEach(d => {
-  //   allTasks.filter( filterTasksByDate )
-  // })
-  
-  // $cal.innerHTML = days.map(getOneDayAsHtmlString).join(``);
-
-
-
-  // for(let i = 0; i < daysToDisplay; i++) {
-  //   let typeOfDay = ``;
-  //   if (i == 0) {
-  //     typeOfDay = `past`
-  //   } else if (i == 1) {
-  //     typeOfDay = `today`
-  //   }
-  //   $cal.innerHTML += `<li class="day ${typeOfDay}">
-  //     <h1 class="date">Monday, May 27, 2019</h1>
-  //     <ul class="tasks" id="tasks"></ul>
-  //   </li>`;
-  // }
-
-  /*
-  <li class="day past"></li>
-  <li class="day today">
-    <h1 class="date">Monday, May 27, 2019</h1>
-    <ul class="tasks" id="tasks"></ul>
-  </li>
-  <li class="day"></li>
-  <li class="day"></li>
-  <li class="day"></li>
-  */
-
-
-
-
 
 
 
