@@ -85,20 +85,46 @@ const showLoading = (show = true) => {
 }
 
 
-const buildOneDay = (y, m, d) => {
-  
-  const $todaysTasks = allTasks
-    .filter(aTask => aTask.start.year == y && aTask.start.month == m && aTask.start.date == d)
-    .map(getOneTaskAsHtmlString)
-    .join(``);
+const getOneDayAsHtmlString = (day) => {
+
+  const year = day.date.y;
+  const month = day.date.m;
+  const date = day.date.d;
+
+  // Combine all the tasks into a string
+  const todaysTasks = day.tasks.map(getOneTaskAsHtmlString).join(``);
 
   return `
-    <li class="day" data-y="${y}" data-m="${m}" data-d="${d}">
-      <h1 class="date">${y}-${m}-${d}</h1>
-      <ul class="tasks">${ $todaysTasks }</ul>
+    <li class="day ${ day.classes }" data-y="${ year }" data-m="${ month }" data-d="${ date }">
+      <h1 class="date">${ day.str }</h1>
+      <ul class="tasks">${ todaysTasks }</ul>
       <button class="addnew">Add New Task</button>
       <input type="text" placeholder="What task?">
     </li>`;
+}
+
+const getDayObjectFromDate = (dateToLoad, daysFromNow) => {
+
+  // Date numbered values
+  const year = dateToLoad.getFullYear();
+  const month = dateToLoad.getMonth() + 1;
+  const date = dateToLoad.getDate();
+
+  // Build a human-readable date string
+  const datestr = dateToLoad.toDateString(`default`, {weekday:`short`, month:`short`, day:`numeric`});
+  
+  // Get the tasks for this date
+  const datetasks = allTasks.filter(aTask => aTask.start.year == year && aTask.start.month == month && aTask.start.date == date);
+
+  // Add classes for current and past dates
+  let classstr = ``
+  if (daysFromNow == 0) {
+    classstr = `today`;
+  } else if (daysFromNow < 0) {
+    classstr = `past`;
+  }
+
+  return {str: datestr, date: { y:year, m:month, d:date }, classes: classstr, tasks: datetasks};
 }
 
 
@@ -108,70 +134,62 @@ window.addEventListener('load', event => {
 
   const $cal = document.getElementById(`cal`);
 
-  const days = [
-    {date:{y:2019,m:6,d:9 }},
-    {date:{y:2019,m:6,d:10}},
-    {date:{y:2019,m:6,d:11}},
-    {date:{y:2019,m:6,d:12}},
-    {date:{y:2019,m:6,d:13}},
-  ];
+  let curr = new Date();
+  let loadDays = 5;
+  let startDay = -1; // Start loading from yesterday (relative days + or -)
 
-  let $allDays = ``;
-  days.forEach(day => {
-    $allDays += buildOneDay(day.date.y, day.date.m, day.date.d);
-  });
+  // Load up all the days in this empty array
+  const daysToDisplay = [];
 
-  $cal.innerHTML = $allDays;
+  // Load up X (loadDay) number of days
+  for (let i = 0; i < loadDays; i++) {
 
+    const daysFromNow = i + startDay;
 
+    // Take the current date, load relative dates by multiplying 86400000 (milliseconds in a day)
+    const dateToLoad = new Date(curr.valueOf() + (daysFromNow * 86400000));
+    
+    // Load up our Array with an Object built from a date object
+    daysToDisplay.push( getDayObjectFromDate(dateToLoad, daysFromNow) );
+  }
 
-
-  // const days = [
-  //   {str: `Sun, June 09, 2019`, date:{y:2019,m:6,d:9 }, classes: `past`,  tasks: []},
-  //   {str: `Mon, June 10, 2019`, date:{y:2019,m:6,d:10}, classes: `today`, tasks: []},
-  //   {str: `Tue, June 11, 2019`, date:{y:2019,m:6,d:11}, classes: ``,      tasks: []},
-  //   {str: `Wed, June 12, 2019`, date:{y:2019,m:6,d:12}, classes: ``,      tasks: []},
-  //   {str: `Thu, June 13, 2019`, date:{y:2019,m:6,d:13}, classes: ``,      tasks: []},
-  // ];
+  // Get all the days and join them together
+  $cal.innerHTML = daysToDisplay.map(getOneDayAsHtmlString).join(``);
 
 
 
-  // const $tasks = document.getElementById(`tasks`);
+
+  //const $tasks = document.getElementById(`tasks`);
 
   // // Add the loading screen when you make a request
   // showLoading();
 
-  // $tasks.addEventListener(`click`, (event) => {
-
-  //   //console.log(event.target);
+  $cal.addEventListener(`click`, (event) => {
     
   //   // Find the "closest" element that matches .task (css selector)
-  //   let $task = event.target.closest(`.task`);
+    let $task = event.target.closest(`.task`);
 
-  //   // If none were found, then get the heck outta here!
-  //   if (!$task) return;
+    // If none were found, then get the heck outta here!
+    if (!$task) return;
 
-  //   // If we got this far, we must have found a `.task`, now let's dive into it...
-  //   const taskid = $task.dataset.taskid;
+    // If we got this far, we must have found a `.task`, now let's dive into it...
+    const taskid = $task.dataset.taskid;
 
-  //   // Change status to "done" or not "done"
-  //   // FIND THE ELEMENT IN THE "tasks" ARRAY THAT MATCHES THIS ID
-  //   // CHANGE ITS "complete" PROPERTY TO THE OPPOSITE OF WHAT ITS CURRENTLY SET TO
-  //   // THEN REPLACE THE CURRENT HTML WITH UPDATED HTML
+    // Search for the first element whose id matches the one we're looking for
+    let taskObj = allTasks.find( t => t.id == taskid );
 
-  //   // Search for the first element whose id matches the one we're looking for
-  //   let taskObj = tasks.find( t => t.id == taskid );
+    // If no matching task was found
+    if (!taskObj) return;
 
-  //   // If no matching task was found
-  //   if (!taskObj) return;
+    // Set "compelete" to its inverse
+    taskObj.complete = !taskObj.complete;
 
-  //   // Set "compelete" to its inverse
-  //   taskObj.complete = !taskObj.complete;
+    // Reprint the list of tasks
+    $cal.innerHTML = daysToDisplay.map(getOneDayAsHtmlString).join(``);
 
-  //   // Reprint the list of tasks
-  //   $tasks.innerHTML = getAllTasksAsHtmlString();
+    // NOTE: We only really need to reprint that one element, make some adjustments in the future
 
-  // });
+  });
 
   // // Simulate data loading, delay 3 seconds
   // setTimeout(() => {
@@ -180,7 +198,3 @@ window.addEventListener('load', event => {
   // }, 3000);
   
 });
-
-
-
-
